@@ -127,7 +127,7 @@ with open('scaler.pkl', 'wb') as f:
     pickle.dump(StandardScaler(), f)
 
 with open('model.pkl', 'wb') as f:
-    pickle.dump(LinearSVC, f)
+    pickle.dump(LinearSVC(), f)
 
 print("Model and scaler have been saved.")
 
