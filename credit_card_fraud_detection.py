@@ -119,18 +119,24 @@ from sklearn.metrics import hinge_loss
 loss_sklearn = hinge_loss(y_test, sklearn_pred)
 print("[Scikit-Learn] Hinge loss:   {0:.3f}".format(loss_sklearn))
 
-# Save the scaler and model using pickle
+# Fit and save the StandardScaler on the dataset
+scaler = StandardScaler()
+scaler.fit(big_raw_data.iloc[:, 1:30])  # Fit scaler on feature columns
+big_raw_data.iloc[:, 1:30] = scaler.transform(big_raw_data.iloc[:, 1:30])
 
-import pickle
+# Fit the model (LinearSVC) on the training data
+sklearn_svm = LinearSVC(class_weight='balanced', random_state=31, loss="hinge", fit_intercept=False)
+sklearn_svm.fit(X_train, y_train)
 
+# Save the fitted scaler
 with open('scaler.pkl', 'wb') as f:
-    pickle.dump(StandardScaler(), f)
+    pickle.dump(scaler, f)
 
+# Save the trained model
 with open('model.pkl', 'wb') as f:
-    pickle.dump(LinearSVC(), f)
+    pickle.dump(sklearn_svm, f)
 
-print("Model and scaler have been saved.")
-
+print("Fitted scaler and trained model have been saved.")
 
 
 
